@@ -10,7 +10,7 @@ pipeline {
 
         stage('Clone Repo') {
             steps {
-                git 'git branch: 'main', url: 'https://github.com/kvnikhildev/python-django-app1.git'
+                    git branch: 'main', url: 'https://github.com/kvnikhildev/python-django-app1.git'
             }
         }
         stage('code quality and unit test ') {
