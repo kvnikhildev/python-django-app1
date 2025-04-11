@@ -24,7 +24,6 @@ pipeline {
         stage('code quality and unit test ') {
             steps {
                 script {
-                    sh 'pip install flake8'
                     sh 'flake8 .'
                     echo " Run linter (e.g., flake8)"
                     sh 'flake8 .'
