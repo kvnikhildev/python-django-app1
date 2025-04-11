@@ -1,0 +1,60 @@
+pipeline {
+    agent any
+     environment {
+        TRIVY_IMAGE = "aquasec/trivy"  // Using Trivy Docker image to avoid installing it
+        DOCKER_IMAGE = "pythonapp-v1"
+    }
+
+
+    stages {
+
+        stage('Clone Repo') {
+            steps {
+                git 'https://github.com/your-username/your-repo.git'
+            }
+        }
+        stage('code quality and unit test ') {
+            steps {
+                script {
+                    echo " Run linter (e.g., flake8)"
+                    sh 'flake8 .'
+                    echo "Run unit tests (e.g., pytest)"
+                    sh 'pytest'
+                }
+
+            }
+        }
+        stage('build docker image ') {
+            steps {
+                script {
+                 sh docker build -t ${DOCKER_IMAGE} .
+                }
+            }
+        }
+        stage('securityscan') {
+            steps {
+                script {
+                    // Run Trivy container scan for vulnerabilities on the built image
+                    sh """
+                    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+                    ${TRIVY_IMAGE} image --no-progress --severity HIGH,CRITICAL ${DOCKER_IMAGE}
+                    
+                    """
+                }
+
+            }
+        }
+        stage('deploy applicaiton') {
+            steps {
+                script {
+                    // Run Trivy container scan for vulnerabilities on the built image
+                    sh 'docker run -p 8000:8000 ${DOCKER_IMAGE}'  
+                    
+                  
+                } 
+
+            }
+        }
+
+    }
+}
