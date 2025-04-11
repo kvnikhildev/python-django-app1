@@ -26,7 +26,7 @@ pipeline {
         stage('code quality and unit test ') {
             steps {
                 script {
-                    sh 'flake8 .'
+                    sh '~/.local/bin/flake8 .'
                     echo " Run linter (e.g., flake8)"
                     sh 'flake8 .'
                     echo "Run unit tests (e.g., pytest)"
