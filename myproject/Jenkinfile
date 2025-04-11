@@ -21,7 +21,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'pip install flake8'
+                    sh 'sudo pip install flake8'
                     sh 'flake8 .'
                     echo " Run linter (e.g., flake8)"
                     sh 'flake8 .'
