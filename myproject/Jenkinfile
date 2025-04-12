@@ -61,5 +61,12 @@ pipeline {
             }
         }
 
+        post {
+            always {
+                archiveArtifacts artifacts: '**/trivy-report.txt', allowEmptyArchive: true
+                archiveArtifacts artifacts: '**/pytest-report.xml', allowEmptyArchive: true
+                }
+           }
+
     }
 }
