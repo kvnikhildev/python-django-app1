@@ -60,6 +60,7 @@ pipeline {
 
             }
         }
+    }
 
         post {
             always {
@@ -67,6 +68,5 @@ pipeline {
                 archiveArtifacts artifacts: '**/pytest-report.xml', allowEmptyArchive: true
                 }
            }
-
-    }
 }
+
