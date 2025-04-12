@@ -29,7 +29,7 @@ pipeline {
                  sh """
                 docker run --rm -v "\$PWD":/app -w /app ${DOCKER_IMAGE} sh -c '  #for flake and pytest it should install in jenkin server but we here use the same docker file and use the present work directry as app
                 flake8 . --exclude=myenv || true                     #skip the code quality and unit test error by adding || true
-                pytest || true
+                pytest || true --junitxml=pytest-report.xml
                 '
             """
                 }
@@ -42,7 +42,8 @@ pipeline {
                     // Run Trivy container scan for vulnerabilities on the built image
                     sh """
                     docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
-                    ${TRIVY_IMAGE} image --no-progress --severity HIGH,CRITICAL ${DOCKER_IMAGE}
+                    ${TRIVY_IMAGE} image --no-progress --severity HIGH,CRITICAL ${DOCKER_IMAGE} \
+                    > trivy-report.txt
                     
                     """
                 }
