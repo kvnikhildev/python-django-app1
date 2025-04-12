@@ -29,7 +29,8 @@ pipeline {
                  sh """
                 docker run --rm -v "\$PWD":/app -w /app ${DOCKER_IMAGE} sh -c '  #for flake and pytest it should install in jenkin server but we here use the same docker file and use the present work directry as app
                 flake8 . --exclude=myenv || true                     #skip the code quality and unit test error by adding || true
-                pytest || true --junitxml=pytest-report.xml
+                pytest --junitxml=pytest-report.xml || true
+
                 '
             """
                 }
